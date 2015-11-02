@@ -301,14 +301,14 @@ class SmartTextArea extends Component {
 
   render() {
     var classes = classnames({
-                    'pp-smarttextarea': true,
-                    'pp-prabin-responsive': this.state.showAtRef
+                    'react-comment-box-smarttextarea': true,
+                    'react-comment-box-prabin-responsive': this.state.showAtRef
                 });
 
     return (
-      <div className="pp-smarttextarea__outerdiv" ref='smarttextareaContainer'>
+      <div className="react-comment-box-smarttextarea__outerdiv" ref='smarttextareaContainer'>
         <div className={classes}>
-          <div className="pp-smarttextarea__innerdiv">
+          <div className="react-comment-box-smarttextarea__innerdiv">
             {this.getGhostDivContent()}
             <TextAreaAutosize
                 defaultValue={this.props.defaultValue}
@@ -320,7 +320,7 @@ class SmartTextArea extends Component {
                 onKeyUp={this.handleKeyUp.bind(this)}
                 onFocus={this.handleFocus.bind(this)}
                 onBlur={this.handleBlur.bind(this)}
-                className='pp-newpost__textarea'
+                className='react-comment-box-smarttextarea__textarea'
                 value={this.state.contentText}
                 ref='newPostTextArea'
                 >

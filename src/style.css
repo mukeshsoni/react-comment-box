@@ -1,4 +1,4 @@
-.pp-smarttextarea {
+.react-comment-box-smarttextarea {
   overflow: hidden;
   overflow-y: auto;
   border: 1px solid #c8c8c8;
@@ -7,10 +7,10 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.pp-smarttextarea .pp-smarttextarea__innerdiv {
+.react-comment-box-smarttextarea .react-comment-box-smarttextarea__innerdiv {
   position: relative;
 }
-.pp-smarttextarea .pp-newpost__textarea {
+.react-comment-box-smarttextarea .react-comment-box-smarttextarea__textarea {
   height: 28px;
   resize: none;
   width: 100%;
@@ -25,10 +25,10 @@
   background: transparent;
   position: relative;
 }
-.pp-smarttextarea .pp-newpost__textarea:focus {
+.react-comment-box-smarttextarea .react-comment-box-smarttextarea__textarea:focus {
   outline: none;
 }
-.pp-smarttextarea .ghostdiv {
+.react-comment-box-smarttextarea .ghostdiv {
   position: absolute;
   white-space: pre-wrap;
   background: transparent;
@@ -38,10 +38,10 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.pp-smarttextarea .ghostdiv span > a {
+.react-comment-box-smarttextarea .ghostdiv span > a {
   color: transparent;
 }
-.pp-smarttextarea .ghostdiv span.highlighter {
+.react-comment-box-smarttextarea .ghostdiv span.highlighter {
   background: #d8deea;
   backgroud: -webkit-gradient(linear, center top, center bottom, from(#dce6f8), to(#bdcff1));
   background-color: -webkit-linear-gradient(#dce6f8, #bdcff1);
@@ -50,6 +50,6 @@
   -webkit-box-shadow: 0 0 0 1px #a3bcea;
   word-wrap: break-word;
 }
-.pp-smarttextarea__outerdiv {
+.react-comment-box-smarttextarea__outerdiv {
   position: relative;
 }
