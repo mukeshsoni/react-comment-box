@@ -17,11 +17,6 @@ var highlightableItems = {
     name: 'hashtag',
     itemList: [],
     keyChar: '#'
-  },
-  members: {
-    name: 'members',
-    itemList: [],
-    keyChar: ' '
   }
 };
 
@@ -79,7 +74,6 @@ class SmartTextArea extends Component {
     super(props);
     this.state = {
                     showAtRef: false,
-                    showHashtagPicker: false,
                     contentText: this.props.defaultValue,
                     // contentText: '',
                     showMembersSuggestions: false
@@ -105,10 +99,6 @@ class SmartTextArea extends Component {
     return '';
   }
 
-  getHashtagComponent() {
-    return '';
-  }
-  
   hashtagToHtml(text) {
     var hashTagRegex = /(^|\s)(#[a-z\d-]+)/ig;
     return text.replace(hashTagRegex, '$1<span class="highlighter">$2</span>');
@@ -219,10 +209,6 @@ class SmartTextArea extends Component {
     return this.isCursorInCharZone('@');
   }
 
-  isCursorInHashtagZone() {
-    return this.isCursorInCharZone('#');
-  }
-
   handleFocus() {
     typeof this.props.onTextareaFocus === 'function' && this.props.onTextareaFocus();
   }
@@ -233,10 +219,8 @@ class SmartTextArea extends Component {
 
   handleTextareaClick(event) {
     var showAtRef = this.isCursorInAtrefZone();
-    // var showHashtagPicker = this.isCursorInHashtagZone();
     this.setState({
-        showAtRef: showAtRef,
-        showHashtagPicker: false
+        showAtRef: showAtRef
     });
   }
 
@@ -250,30 +234,21 @@ class SmartTextArea extends Component {
   }
 
   handleKeyPress(event) {
-    var showAtRef = this.state.showAtRef,
-    showHashtagPicker = this.state.showHashtagPicker;
+    var showAtRef = this.state.showAtRef;
 
     switch(event.which) {
       case 64: // '@'
         if(event.target.value[this._getCaretPosition() - 1] === ' '
           || event.target.value[this._getCaretPosition() - 1] === undefined
           || event.target.value[this._getCaretPosition() - 1] === '\n') {
-          showAtRef = showHashtagPicker ? false : true;
+          showAtRef = true;
         }
-      break;
-      case 35: // '#'
-        if(event.target.value[this._getCaretPosition() - 1] === ' '
-            || event.target.value[this._getCaretPosition() - 1] === undefined
-            || event.target.value[this._getCaretPosition() - 1] === '\n') {
-            showHashtagPicker = showAtRef ? false : true;
-        }
-      break;
+        break;
       default: // do nothing
     }
 
     this.setState({
-      showAtRef: showAtRef,
-      showHashtagPicker: showHashtagPicker
+      showAtRef: showAtRef
     });
   }
 
@@ -285,12 +260,6 @@ class SmartTextArea extends Component {
           this.handleAtRefEnterKeyPress();
           this.setState({ showAtRef: false });
         }
-
-        // if(this.state.showHashtagPicker) {
-        //     event.preventDefault();
-        //     this.handleHashtagEnterKeyPress();
-        //     this.setState({ showHashtagPicker: false });
-        // }
         break;
       case 38: // up
         if(this.state.showAtRef) {
@@ -298,12 +267,6 @@ class SmartTextArea extends Component {
           this.refs.comboboxNodeForAtref.stepUp();
           return;
         }
-
-        // if(this.state.showHashtagPicker) {
-        //     event.preventDefault();
-        //     this.refs.comboboxNodeForHashtag.stepUp();
-        //     return;
-        // }
         break;
       case 40: // down
         if(this.state.showAtRef) {
@@ -312,12 +275,6 @@ class SmartTextArea extends Component {
           this.refs.comboboxNodeForAtref.stepDown();
           return;
         }
-
-        // if(this.state.showHashtagPicker) {
-        //     event.preventDefault();
-        //     this.refs.comboboxNodeForHashtag.stepDown();
-        //     return;
-        // }
         break;
       default:
       // don't do nothing
@@ -326,30 +283,26 @@ class SmartTextArea extends Component {
 
   handleKeyUp(event) {
     var showAtRef = this.state.showAtRef;
-    var showHashtagPicker = this.state.showHashtagPicker;
 
     switch(event.keyCode) {
       case 27: // escape key
         showAtRef = false;
-        showHashtagPicker = false;
         break;
       case 8: // backspace
         showAtRef = this.isCursorInAtrefZone();
-        showHashtagPicker = this.isCursorInHashtagZone();
         break;
         default:
         return;
     }
     this.setState({
       showAtRef: showAtRef
-      // showHashtagPicker: showHashtagPicker
     });
   }
 
   render() {
     var classes = classnames({
                     'pp-smarttextarea': true,
-                    'pp-prabin-responsive': this.state.showAtRef || this.state.showHashtagPicker
+                    'pp-prabin-responsive': this.state.showAtRef
                 });
 
     return (
@@ -373,7 +326,6 @@ class SmartTextArea extends Component {
                 >
             </TextAreaAutosize>
             {this.state.showAtRef ? this.getAtrefComponent() : ''}
-            {this.state.showHashtagPicker ? this.getHashtagComponent() : ''}
           </div>
         </div>
       </div>
