@@ -11,6 +11,7 @@
   position: relative;
 }
 .react-comment-box-smarttextarea .react-comment-box-smarttextarea__textarea {
+  font-size: 14px;
   height: 28px;
   resize: none;
   width: 100%;

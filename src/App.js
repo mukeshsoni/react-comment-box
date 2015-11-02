@@ -4,7 +4,7 @@ import TextAreaAutosize from 'react-textarea-autosize';
 import Autolinker from 'autolinker';
 import _ from 'lodash';
 import classnames from 'classnames';
-import 'css!./style.css';
+require('style!css!./style.css');
 
 var links = [];
 var highlightableItems = {
@@ -301,8 +301,7 @@ class SmartTextArea extends Component {
 
   render() {
     var classes = classnames({
-                    'react-comment-box-smarttextarea': true,
-                    'react-comment-box-prabin-responsive': this.state.showAtRef
+                    'react-comment-box-smarttextarea': true
                 });
 
     return (
