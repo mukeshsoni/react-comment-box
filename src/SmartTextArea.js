@@ -5,6 +5,7 @@ import Autolinker from 'autolinker';
 import _ from 'lodash';
 import classnames from 'classnames';
 require('style!css!./style.css');
+require('style!css!./reset.css');
 
 var links = [];
 var highlightableItems = {
@@ -20,7 +21,7 @@ var highlightableItems = {
   }
 };
 
-function getCaretPosition (element) {
+function getCaretPosition(element) {
   var CaretPos = 0;   // IE Support
   if (document.selection) {
     element.focus();
@@ -173,7 +174,7 @@ class SmartTextArea extends Component {
     if(!caretPosition || caretPosition <= 0) {
       return false;
     }
-     
+
 // TODO - very inefficient
 // if the string is 10000 characters wrong, a backspace might trigger a search through all the 10000 characters
 // that is the reason i was short circuiting the search when a space was found
@@ -303,9 +304,13 @@ class SmartTextArea extends Component {
     var classes = classnames({
                     'react-comment-box-smarttextarea': true
                 });
+    var containerStyle = {width: this.props.width};
 
     return (
-      <div className="react-comment-box-smarttextarea__outerdiv" ref='smarttextareaContainer'>
+      <div
+        style={containerStyle}
+        className="react-comment-box-smarttextarea__outerdiv"
+        ref='smarttextareaContainer'>
         <div className={classes}>
           <div className="react-comment-box-smarttextarea__innerdiv">
             {this.getGhostDivContent()}
@@ -338,6 +343,7 @@ SmartTextArea.propTypes = {
 };
 
 SmartTextArea.defaultProps = {
+  width: 300,
   placeholder: 'Hey there! Share your moment! Now?',
   defaultValue: '',
   type: 'default'

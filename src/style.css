@@ -1,3 +1,8 @@
+body {
+  font-family: 'AvenirRegular', Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
 .react-comment-box-smarttextarea {
   overflow: hidden;
   overflow-y: auto;
@@ -53,4 +58,10 @@
 }
 .react-comment-box-smarttextarea__outerdiv {
   position: relative;
+}
+
+a {
+  color: #333333;
+  cursor: pointer;
+  background-color: transparent;
 }
