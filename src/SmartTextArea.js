@@ -96,10 +96,6 @@ class SmartTextArea extends Component {
     };
   }
 
-  getAtrefComponent() {
-    return '';
-  }
-
   hashtagToHtml(text) {
     var hashTagRegex = /(^|\s)(#[a-z\d-]+)/ig;
     return text.replace(hashTagRegex, '$1<span class="highlighter">$2</span>');
@@ -255,28 +251,28 @@ class SmartTextArea extends Component {
 
   handleKeyDown(event) {
     switch(event.keyCode) {
-      case 13://Enter
-        if(this.state.showAtRef) {
-          event.preventDefault();
-          this.handleAtRefEnterKeyPress();
-          this.setState({ showAtRef: false });
-        }
-        break;
-      case 38: // up
-        if(this.state.showAtRef) {
-          event.preventDefault();
-          this.refs.comboboxNodeForAtref.stepUp();
-          return;
-        }
-        break;
-      case 40: // down
-        if(this.state.showAtRef) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.refs.comboboxNodeForAtref.stepDown();
-          return;
-        }
-        break;
+      // case 13://Enter
+      //   if(this.state.showAtRef) {
+      //     event.preventDefault();
+      //     this.handleAtRefEnterKeyPress();
+      //     this.setState({ showAtRef: false });
+      //   }
+      //   break;
+      // case 38: // up
+      //   if(this.state.showAtRef) {
+      //     event.preventDefault();
+      //     this.refs.comboboxNodeForAtref.stepUp();
+      //     return;
+      //   }
+      //   break;
+      // case 40: // down
+      //   if(this.state.showAtRef) {
+      //     event.preventDefault();
+      //     event.stopPropagation();
+      //     this.refs.comboboxNodeForAtref.stepDown();
+      //     return;
+      //   }
+      //   break;
       default:
       // don't do nothing
     }
@@ -298,6 +294,64 @@ class SmartTextArea extends Component {
     this.setState({
       showAtRef: showAtRef
     });
+  }
+
+  getContentWithItem(item, itemType) {
+      var postText = this.state.contentText;
+      var lastCharacterEnteredIndex = this._getCaretPosition();
+      var indexOfChar = this._getIndexOfNearestChar(this.state.contentText, highlightableItems[itemType].keyChar);
+
+      return postText.substr(0, indexOfChar+1) + (item.name ? `${item.name} ` : '') + postText.substr(lastCharacterEnteredIndex, postText.length);
+  }
+
+  handleHighlightableItemEnterKeyPress(item, itemType) {
+      // in case enter was pressed when the filtered list had no items
+      if(!item) {
+          return;
+      }
+
+      var postText = this.state.contentText,
+          keyChar = highlightableItems[itemType].keyChar,
+          nearestKeyCharPosition = this._getIndexOfNearestChar(postText, keyChar),
+          itemList = highlightableItems[itemType].itemList;
+      var self = this;
+
+      itemList.push(item);
+
+      this.setState({
+          contentText: this.getContentWithItem(item, itemType),
+          showAtRef: false
+      }, function() {
+          setCaretPosition(self.refs.newPostTextArea.getDOMNode(), nearestKeyCharPosition + item.name.length + 2);
+      });
+  }
+
+  handleAtrefChange(newValue) {
+    this.handleHighlightableItemEnterKeyPress(newValue, 'atref')
+
+    console.log('new value: ', newValue);
+  }
+
+
+
+  getAtrefComponent() {
+    if(typeof this.props.getListComponent !== 'function') {
+      return null;
+    }
+
+    var ListComponent = this.props.getListComponent();
+    var options = [
+      { value: 'Radha', label: 'Radha' },
+      { value: 'Kishan', label: 'Kishan' }
+    ];
+
+    return (
+      <ListComponent
+        value='Radha'
+        options={options}
+        onChange={this.handleAtrefChange.bind(this)}
+        />
+    )
   }
 
   render() {
@@ -329,7 +383,7 @@ class SmartTextArea extends Component {
                 ref='newPostTextArea'
                 >
             </TextAreaAutosize>
-            {this.state.showAtRef ? this.getAtrefComponent() : ''}
+            {this.state.showAtRef && false ? this.getAtrefComponent() : ''}
           </div>
         </div>
       </div>
@@ -338,6 +392,7 @@ class SmartTextArea extends Component {
 };
 
 SmartTextArea.propTypes = {
+  getListComponent: PropTypes.func,
   defaultValue: PropTypes.string,
   placeholder: PropTypes.string
 };
